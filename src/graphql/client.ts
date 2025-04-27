@@ -56,7 +56,7 @@ export class LinearGraphQLClient {
   // Create single issue
   async createIssue(input: CreateIssueInput): Promise<CreateIssueResponse> {
     const { CREATE_ISSUE_MUTATION } = await import('./mutations.js');
-    return this.execute<CreateIssueResponse>(CREATE_ISSUE_MUTATION, { input: input });
+    return this.execute<CreateIssueResponse>(CREATE_ISSUE_MUTATION, { input });
   }
 
   // Create multiple issues
@@ -110,9 +110,9 @@ export class LinearGraphQLClient {
 
   // Update a single issue
   async updateIssue(id: string, input: UpdateIssueInput): Promise<UpdateIssuesResponse> {
-    const { UPDATE_ISSUES_MUTATION } = await import('./mutations.js');
-    return this.execute<UpdateIssuesResponse>(UPDATE_ISSUES_MUTATION, {
-      ids: [id],
+    const { UPDATE_ISSUE_MUTATION } = await import('./mutations.js');
+    return this.execute<UpdateIssuesResponse>(UPDATE_ISSUE_MUTATION, {
+      id,
       input,
     });
   }
