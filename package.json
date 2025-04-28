@@ -38,5 +38,9 @@
     "@modelcontextprotocol/sdk": "^1.4.0",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6"
+  },
+  "overrides": {
+    "glob": "^10.3.16",
+    "inflight": "npm:lru-cache@^10.2.0"
   }
 }
