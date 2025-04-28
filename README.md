@@ -20,14 +20,17 @@ An MCP server for interacting with Linear's API. This server provides a set of t
 
 The server supports two authentication methods:
 
-#### Personal Access Token (Recommended)
+#### API Key (Recommended)
 
-1. Go to Linear: Settings > API > OAuth application > "Cline MCP"
-2. Under "Developer Token", click "Create & copy token"
-3. Select "Application"
-3. Add the token to your `.env` file:
+1. Go to Linear Settings
+2. Navigate to the "Security & access" section
+3. Find the "Personal API keys" section
+4. Click "New API key"
+5. Give the key a descriptive label (e.g. "Cline MCP")
+6. Copy the generated token immediately
+7. Add the token to your `.env` file:
    ```
-   LINEAR_ACCESS_TOKEN=your_personal_access_token
+   LINEAR_API_KEY=your_api_key
    ```
 
 #### OAuth Flow (Alternative) ***NOT IMPLEMENTED***
@@ -66,7 +69,7 @@ The server supports two authentication methods:
          "command": "node",
          "args": ["/path/to/linear-mcp/build/index.js"],
          "env": {
-           "LINEAR_ACCESS_TOKEN": "your_personal_access_token"
+           "LINEAR_API_KEY": "your_personal_access_token"
          },
          "disabled": false,
          "autoApprove": []
@@ -97,7 +100,7 @@ The server currently supports the following operations:
 - ✅ Access team states and labels
 
 ### Authentication
-- ✅ Personal Access Token (PAT) authentication
+- ✅ API Key authentication
 - ✅ Secure token storage
 
 ### Batch Operations
@@ -141,7 +144,7 @@ npm install
 # Run tests
 npm test
 
-# Run integration tests (requires LINEAR_ACCESS_TOKEN)
+# Run integration tests (requires LINEAR_API_KEY)
 npm run test:integration
 
 # Build the server
@@ -155,7 +158,7 @@ npm start
 
 Integration tests verify that authentication and API calls work correctly:
 
-1. Set up authentication (PAT recommended for testing)
+1. Set up authentication (API Key recommended for testing)
 2. Run integration tests:
    ```bash
    npm run test:integration

@@ -96,7 +96,7 @@ class HandlerFactory {
 
 ### Authentication Layer
 
-The authentication system supports both PAT and OAuth flows:
+The authentication system supports both API Key and OAuth flows:
 
 ```typescript
 class AuthHandler extends BaseHandler {
@@ -105,7 +105,7 @@ class AuthHandler extends BaseHandler {
 }
 
 interface AuthConfig {
-  type: 'pat' | 'oauth';
+  type: 'apikey' | 'oauth';
   accessToken?: string;
   clientId?: string;
   clientSecret?: string;
@@ -239,8 +239,8 @@ interface ErrorToolResponse extends BaseToolResponse {
     // OAuth-specific implementation
   }
 
-  class PatLinearAuth implements ILinearAuth {
-    // PAT-specific implementation
+  class APILinearAuth implements ILinearAuth {
+    // API-specific implementation
   }
   ```
 

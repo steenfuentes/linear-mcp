@@ -37,9 +37,9 @@
 - [ ] Split LinearAuth into separate classes:
   - [ ] Create ILinearAuth interface
   - [ ] Implement OAuthLinearAuth class
-  - [ ] Implement PatLinearAuth class
+  - [ ] Implement APILinearAuth class
 - [ ] Move OAuth-specific logic to OAuthLinearAuth
-- [ ] Simplify PatLinearAuth implementation
+- [ ] Simplify APILinearAuth implementation
 
 ### Caching Implementation
 - [ ] Add caching layer for frequently accessed data:

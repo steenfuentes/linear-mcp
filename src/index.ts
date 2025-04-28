@@ -37,12 +37,12 @@ class LinearServer {
 
     this.auth = new LinearAuth();
     
-    // Initialize with PAT if available
-    const accessToken = process.env.LINEAR_ACCESS_TOKEN;
-    if (accessToken) {
+    // Initialize with API Key if available
+    const apiKey = process.env.LINEAR_API_KEY;
+    if (apiKey) {
       this.auth.initialize({
-        type: 'pat',
-        accessToken
+        type: 'api',
+        apiKey
       });
       this.graphqlClient = new LinearGraphQLClient(this.auth.getClient());
     }

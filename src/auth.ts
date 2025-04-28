@@ -10,7 +10,7 @@ import { McpError, ErrorCode } from '@modelcontextprotocol/sdk/types.js';
  * - Status: Failed - Browser extensions and CORS blocking requests
  * 
  * 2. Personal Access Token (Current Attempt)
- * - Using PAT for initial integration tests
+ * - Using API Key for initial integration tests
  * - Simpler approach without browser interaction
  * - Status: Working - Successfully authenticates and makes API calls
  * 
@@ -26,15 +26,15 @@ export interface OAuthConfig {
   redirectUri: string;
 }
 
-export interface PersonalAccessTokenConfig {
-  type: 'pat';
-  accessToken: string;
+export interface APIKeyConfig {
+  type: 'api';
+  apiKey: string;
 }
 
-export type AuthConfig = OAuthConfig | PersonalAccessTokenConfig;
+export type AuthConfig = OAuthConfig | APIKeyConfig;
 
 export interface TokenData {
-  accessToken: string;
+  apiKey: string;
   refreshToken: string;
   expiresAt: number;
 }
@@ -103,13 +103,13 @@ export class LinearAuth {
 
       const data = await response.json();
       this.tokenData = {
-        accessToken: data.access_token,
+        apiKey: data.access_token,
         refreshToken: data.refresh_token,
         expiresAt: Date.now() + data.expires_in * 1000,
       };
 
       this.linearClient = new LinearClient({
-        accessToken: this.tokenData.accessToken,
+        apiKey: this.tokenData.apiKey,
       });
     } catch (error) {
       throw new McpError(
@@ -119,7 +119,7 @@ export class LinearAuth {
     }
   }
 
-  public async refreshAccessToken(): Promise<void> {
+  public async refreshAPIKey(): Promise<void> {
     if (!this.config || this.config.type !== 'oauth' || !this.tokenData?.refreshToken) {
       throw new McpError(
         ErrorCode.InvalidRequest,
@@ -151,13 +151,13 @@ export class LinearAuth {
 
       const data = await response.json();
       this.tokenData = {
-        accessToken: data.access_token,
+        apiKey: data.access_token,
         refreshToken: data.refresh_token,
         expiresAt: Date.now() + data.expires_in * 1000,
       };
 
       this.linearClient = new LinearClient({
-        accessToken: this.tokenData.accessToken,
+        apiKey: this.tokenData.apiKey,
       });
     } catch (error) {
       throw new McpError(
@@ -168,15 +168,15 @@ export class LinearAuth {
   }
 
   public initialize(config: AuthConfig): void {
-    if (config.type === 'pat') {
+    if (config.type === 'api') {
       // Personal Access Token flow
       this.tokenData = {
-        accessToken: config.accessToken,
-        refreshToken: '', // Not needed for PAT
-        expiresAt: Number.MAX_SAFE_INTEGER, // PATs don't expire
+        apiKey: config.apiKey,
+        refreshToken: '', // Not needed for API Key
+        expiresAt: Number.MAX_SAFE_INTEGER, // API Keys don't expire
       };
       this.linearClient = new LinearClient({
-        apiKey: config.accessToken,
+        apiKey: config.apiKey,
       });
     } else {
       // OAuth flow
@@ -205,7 +205,7 @@ export class LinearAuth {
   }
 
   public needsTokenRefresh(): boolean {
-    if (!this.tokenData || !this.config || this.config.type === 'pat') return false;
+    if (!this.tokenData || !this.config || this.config.type === 'api') return false;
     return Date.now() >= this.tokenData.expiresAt - 300000; // Refresh 5 minutes before expiry
   }
 
@@ -213,7 +213,7 @@ export class LinearAuth {
   public setTokenData(tokenData: TokenData): void {
     this.tokenData = tokenData;
     this.linearClient = new LinearClient({
-      accessToken: tokenData.accessToken,
+      apiKey: tokenData.apiKey,
     });
   }
 

@@ -7,31 +7,31 @@ import open from 'open';
 config();
 
 async function main() {
-  // Check if we're using PAT or OAuth
-  if (process.env.LINEAR_ACCESS_TOKEN) {
-    await testPat();
+  // Check if we're using API Key or OAuth
+  if (process.env.LINEAR_API_KEY) {
+    await testAPIKey();
   } else if (process.env.LINEAR_CLIENT_ID && process.env.LINEAR_CLIENT_SECRET && process.env.LINEAR_REDIRECT_URI) {
     await testOAuth();
   } else {
-    console.error('ERROR: Either LINEAR_ACCESS_TOKEN or OAuth credentials (LINEAR_CLIENT_ID, LINEAR_CLIENT_SECRET, LINEAR_REDIRECT_URI) are required');
+    console.error('ERROR: Either LINEAR_API_KEY or OAuth credentials (LINEAR_CLIENT_ID, LINEAR_CLIENT_SECRET, LINEAR_REDIRECT_URI) are required');
     process.exit(1);
   }
 }
 
-async function testPat() {
+async function testAPIKey() {
   const auth = new LinearAuth();
   auth.initialize({
-    type: 'pat',
-    accessToken: process.env.LINEAR_ACCESS_TOKEN!
+    type: 'api',
+    apiKey: process.env.LINEAR_API_KEY!
   });
 
   try {
     const client = auth.getClient();
     const viewer = await client.viewer;
-    console.log('\nPAT Authentication successful!');
+    console.log('\nAPI Key Authentication successful!');
     console.log(`Connected as: ${viewer.name} (${viewer.email})`);
     console.log('\nTest Credentials:\n');
-    console.log(`LINEAR_ACCESS_TOKEN=${process.env.LINEAR_ACCESS_TOKEN}`);
+    console.log(`LINEAR_API_KEY=${process.env.LINEAR_API_KEY}`);
   } catch (error) {
     console.error('Authentication failed:', error);
     process.exit(1);

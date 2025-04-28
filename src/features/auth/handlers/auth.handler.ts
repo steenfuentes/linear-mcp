@@ -5,7 +5,7 @@ import { LinearGraphQLClient } from '../../../graphql/client.js';
 
 /**
  * Handler for authentication-related operations.
- * Manages both OAuth and Personal Access Token (PAT) authentication flows.
+ * Manages both OAuth and API Key authentication flows.
  */
 export class AuthHandler extends BaseHandler {
   constructor(auth: LinearAuth, graphqlClient?: LinearGraphQLClient) {

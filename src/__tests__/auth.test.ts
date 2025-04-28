@@ -32,8 +32,8 @@ describe('LinearAuth', () => {
     it('should initialize with valid Personal Access Token', () => {
       expect(() => {
         auth.initialize({
-          type: 'pat',
-          accessToken: 'test-access-token'
+          type: 'api',
+          apiKey: 'test-access-token'
         });
       }).not.toThrow();
 
@@ -67,10 +67,10 @@ describe('LinearAuth', () => {
       expect(url).toContain('redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback');
     });
 
-    it('should throw error when called with PAT config', () => {
+    it('should throw error when called with API Key config', () => {
       auth.initialize({
-        type: 'pat',
-        accessToken: 'test-access-token'
+        type: 'api',
+        apiKey: 'test-access-token'
       });
 
       expect(() => {
@@ -108,10 +108,10 @@ describe('LinearAuth', () => {
       expect(auth.isAuthenticated()).toBe(true);
     });
 
-    it('should throw error when called with PAT config', async () => {
+    it('should throw error when called with API Key config', async () => {
       auth.initialize({
-        type: 'pat',
-        accessToken: 'test-access-token'
+        type: 'api',
+        apiKey: 'test-access-token'
       });
 
       await expect(auth.handleCallback('valid-code')).rejects.toThrow();
@@ -148,7 +148,7 @@ describe('LinearAuth', () => {
 
       // Set expired token
       auth.setTokenData({
-        accessToken: 'test-access-token',
+        apiKey: 'test-access-token',
         refreshToken: 'test-refresh-token',
         expiresAt: Date.now() - 1000
       });
@@ -166,7 +166,7 @@ describe('LinearAuth', () => {
 
       // Set valid token
       auth.setTokenData({
-        accessToken: 'test-access-token',
+        apiKey: 'test-access-token',
         refreshToken: 'test-refresh-token',
         expiresAt: Date.now() + 3600000 // 1 hour from now
       });
@@ -174,17 +174,17 @@ describe('LinearAuth', () => {
       expect(auth.needsTokenRefresh()).toBe(false);
     });
 
-    it('should return false for PAT', () => {
+    it('should return false for API Key', () => {
       auth.initialize({
-        type: 'pat',
-        accessToken: 'test-access-token'
+        type: 'api',
+        apiKey: 'test-access-token'
       });
 
       expect(auth.needsTokenRefresh()).toBe(false);
     });
   });
 
-  describe('refreshAccessToken', () => {
+  describe('refreshAPIKey', () => {
     it('should successfully refresh OAuth token', async () => {
       auth.initialize({
         type: 'oauth',
@@ -195,7 +195,7 @@ describe('LinearAuth', () => {
 
       // Set initial token data
       auth.setTokenData({
-        accessToken: 'test-access-token',
+        apiKey: 'test-access-token',
         refreshToken: 'test-refresh-token',
         expiresAt: Date.now() - 1000 // Expired
       });
@@ -210,7 +210,7 @@ describe('LinearAuth', () => {
         { status: 200 }
       ));
 
-      await expect(auth.refreshAccessToken()).resolves.not.toThrow();
+      await expect(auth.refreshAPIKey()).resolves.not.toThrow();
     });
 
     it('should throw error when refresh fails', async () => {
@@ -223,7 +223,7 @@ describe('LinearAuth', () => {
 
       // Set initial token data
       auth.setTokenData({
-        accessToken: 'test-access-token',
+        apiKey: 'test-access-token',
         refreshToken: 'test-refresh-token',
         expiresAt: Date.now() - 1000 // Expired
       });
@@ -236,16 +236,16 @@ describe('LinearAuth', () => {
         { status: 400 }
       ));
 
-      await expect(auth.refreshAccessToken()).rejects.toThrow();
+      await expect(auth.refreshAPIKey()).rejects.toThrow();
     });
 
-    it('should throw error when called with PAT config', async () => {
+    it('should throw error when called with API Key config', async () => {
       auth.initialize({
-        type: 'pat',
-        accessToken: 'test-access-token'
+        type: 'api',
+        apiKey: 'test-access-token'
       });
 
-      await expect(auth.refreshAccessToken()).rejects.toThrow();
+      await expect(auth.refreshAPIKey()).rejects.toThrow();
     });
   });
 });

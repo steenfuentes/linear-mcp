@@ -26,7 +26,7 @@ export abstract class BaseHandler {
     }
 
     if (this.auth.needsTokenRefresh()) {
-      this.auth.refreshAccessToken();
+      this.auth.refreshAPIKey();
     }
 
     return this.graphqlClient;
