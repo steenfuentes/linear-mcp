@@ -3,32 +3,32 @@ import { LinearAuth } from '../auth';
 import { LinearClient } from '@linear/sdk';
 
 // Skip tests if no credentials are configured
-const hasPatCredentials = process.env.LINEAR_ACCESS_TOKEN;
+const hasAPIKeyCredentials = process.env.LINEAR_API_KEY;
 const hasOAuthCredentials = process.env.LINEAR_CLIENT_ID && 
                           process.env.LINEAR_CLIENT_SECRET && 
                           process.env.LINEAR_REDIRECT_URI;
 
 // Only run integration tests when credentials are available
-(hasPatCredentials || hasOAuthCredentials ? describe : describe.skip)('LinearAuth Integration', () => {
+(hasAPIKeyCredentials || hasOAuthCredentials ? describe : describe.skip)('LinearAuth Integration', () => {
   
-  // PAT Authentication Tests
-  (hasPatCredentials ? describe : describe.skip)('Personal Access Token Authentication', () => {
+  // API Key Authentication Tests
+  (hasAPIKeyCredentials ? describe : describe.skip)('Personal Access Token Authentication', () => {
     let auth: LinearAuth;
 
     beforeAll(() => {
       auth = new LinearAuth();
       auth.initialize({
-        type: 'pat',
-        accessToken: process.env.LINEAR_ACCESS_TOKEN!
+        type: 'api',
+        apiKey: process.env.LINEAR_API_KEY!
       });
     });
 
-    it('should authenticate with PAT', () => {
+    it('should authenticate with API Key', () => {
       expect(auth.isAuthenticated()).toBe(true);
       expect(auth.needsTokenRefresh()).toBe(false);
     });
 
-    it('should make authenticated requests with PAT', async () => {
+    it('should make authenticated requests with API Key', async () => {
       const client = auth.getClient();
       expect(client).toBeInstanceOf(LinearClient);
       
@@ -84,12 +84,12 @@ const hasOAuthCredentials = process.env.LINEAR_CLIENT_ID &&
       }
 
       auth.setTokenData({
-        accessToken: 'expired-token',
+        apiKey: 'expired-token',
         refreshToken,
         expiresAt: Date.now() - 1000 // Expired
       });
 
-      await auth.refreshAccessToken();
+      await auth.refreshAPIKey();
       expect(auth.isAuthenticated()).toBe(true);
       
       const client = auth.getClient();
