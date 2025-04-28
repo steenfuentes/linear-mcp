@@ -724,4 +724,31 @@ describe('LinearGraphQLClient', () => {
       );
     });
   });
+
+  describe("deleteIssue", () => {
+    it("should delete a single issue", async () => {
+      const mockResponse = {
+        data: {
+          issueDelete: {
+            success: true,
+          },
+        },
+      }
+
+      mockRawRequest.mockResolvedValueOnce(mockResponse)
+
+      const id = "issue-1"
+      const result: DeleteIssueResponse = await graphqlClient.deleteIssue(id)
+
+      expect(result).toEqual(mockResponse.data)
+      // Verify single mutation call
+      expect(mockRawRequest).toHaveBeenCalledTimes(1)
+      expect(mockRawRequest).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          id,
+        })
+      )
+    })
+  })
 });
