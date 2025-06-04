@@ -38,7 +38,7 @@ export const SEARCH_ISSUES_QUERY = gql`
           id
           name
           key
-        },
+        }
         project {
           id
           name
@@ -135,6 +135,110 @@ export const GET_PROJECT_QUERY = gql`
           name
         }
       }
+    }
+  }
+`;
+
+export const LIST_INITIATIVES_QUERY = gql`
+  query ListInitiatives(
+    $first: Int
+    $after: String
+    $includeArchived: Boolean
+    $orderBy: PaginationOrderBy
+    $filter: InitiativeFilter
+  ) {
+    initiatives(
+      first: $first
+      after: $after
+      includeArchived: $includeArchived
+      orderBy: $orderBy
+      filter: $filter
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        name
+        description
+        content
+        url
+        slugId
+        color
+        icon
+        sortOrder
+        targetDate
+        startedAt
+        completedAt
+        archivedAt
+        createdAt
+        updatedAt
+        trashed
+        creator {
+          id
+          name
+        }
+        owner {
+          id
+          name
+        }
+        organization {
+          id
+          name
+        }
+        projects {
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_INITIATIVE_QUERY = gql`
+  query GetInitiative($id: String!) {
+    initiative(id: $id) {
+      id
+      name
+      description
+      content
+      url
+      slugId
+      color
+      icon
+      sortOrder
+      targetDate
+      startedAt
+      completedAt
+      archivedAt
+      createdAt
+      updatedAt
+      trashed
+      creator {
+        id
+        name
+      }
+      owner {
+        id
+        name
+      }
+      organization {
+        id
+        name
+      }
+      projects {
+        nodes {
+          id
+          name
+        }
+      }
+      updateReminderFrequency
+      updateReminderFrequencyInWeeks
+      updateRemindersDay
+      updateRemindersHour
     }
   }
 `;

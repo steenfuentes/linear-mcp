@@ -5,6 +5,7 @@ import { IssueHandler } from '../../features/issues/handlers/issue.handler.js';
 import { ProjectHandler } from '../../features/projects/handlers/project.handler.js';
 import { TeamHandler } from '../../features/teams/handlers/team.handler.js';
 import { UserHandler } from '../../features/users/handlers/user.handler.js';
+import { InitiativeHandler } from '../../features/initiatives/handlers/initiative.handler.js';
 
 /**
  * Factory for creating and managing feature-specific handlers.
@@ -16,6 +17,7 @@ export class HandlerFactory {
   private projectHandler: ProjectHandler;
   private teamHandler: TeamHandler;
   private userHandler: UserHandler;
+  private initiativeHandler: InitiativeHandler;
 
   constructor(auth: LinearAuth, graphqlClient?: LinearGraphQLClient) {
     // Initialize all handlers with shared dependencies
@@ -24,13 +26,14 @@ export class HandlerFactory {
     this.projectHandler = new ProjectHandler(auth, graphqlClient);
     this.teamHandler = new TeamHandler(auth, graphqlClient);
     this.userHandler = new UserHandler(auth, graphqlClient);
+    this.initiativeHandler = new InitiativeHandler(auth, graphqlClient);
   }
 
   /**
    * Gets the appropriate handler for a given tool name.
    */
   getHandlerForTool(toolName: string): {
-    handler: AuthHandler | IssueHandler | ProjectHandler | TeamHandler | UserHandler;
+    handler: AuthHandler | IssueHandler | ProjectHandler | TeamHandler | UserHandler | InitiativeHandler;
     method: string;
   } {
     // Map tool names to their handlers and methods
@@ -57,6 +60,15 @@ export class HandlerFactory {
 
       // User tools
       linear_get_user: { handler: this.userHandler, method: 'handleGetUser' },
+
+      // Initiative tools
+      linear_create_initiative: { handler: this.initiativeHandler, method: 'handleCreateInitiative' },
+      linear_update_initiative: { handler: this.initiativeHandler, method: 'handleUpdateInitiative' },
+      linear_list_initiatives: { handler: this.initiativeHandler, method: 'handleListInitiatives' },
+      linear_get_initiative: { handler: this.initiativeHandler, method: 'handleGetInitiative' },
+      linear_delete_initiative: { handler: this.initiativeHandler, method: 'handleDeleteInitiative' },
+      linear_link_project_to_initiative: { handler: this.initiativeHandler, method: 'handleLinkProjectToInitiative' },
+      linear_unlink_project_from_initiative: { handler: this.initiativeHandler, method: 'handleUnlinkProjectFromInitiative' },
     };
 
     const handlerInfo = handlerMap[toolName];

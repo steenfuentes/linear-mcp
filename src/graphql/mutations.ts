@@ -135,3 +135,77 @@ export const CREATE_ISSUE_LABELS = gql`
     }
   }
 `;
+
+export const CREATE_INITIATIVE_MUTATION = gql`
+  mutation CreateInitiative($input: InitiativeCreateInput!) {
+    initiativeCreate(input: $input) {
+      success
+      initiative {
+        id
+        name
+        description
+        content
+        url
+        slugId
+        color
+        icon
+        targetDate
+        startedAt
+        createdAt
+        owner {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_INITIATIVE_MUTATION = gql`
+  mutation UpdateInitiative($id: String!, $input: InitiativeUpdateInput!) {
+    initiativeUpdate(id: $id, input: $input) {
+      success
+      initiative {
+        id
+        name
+        description
+        content
+        url
+        slugId
+        color
+        icon
+        targetDate
+        startedAt
+        completedAt
+        updatedAt
+        owner {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const DELETE_INITIATIVE_MUTATION = gql`
+  mutation DeleteInitiative($id: String!) {
+    initiativeDelete(id: $id) {
+      success
+    }
+  }
+`;
+
+export const UPDATE_PROJECT_INITIATIVE = gql`
+  mutation UpdateProjectInitiative($id: String!, $input: ProjectUpdateInput!) {
+    projectUpdate(id: $id, input: $input) {
+      success
+      project {
+        id
+        initiative {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

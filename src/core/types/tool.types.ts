@@ -434,4 +434,239 @@ export const toolSchemas = {
       required: ['issues'],
     },
   },
+
+  linear_create_initiative: {
+    name: 'linear_create_initiative',
+    description: 'Create a new initiative in Linear',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          description: 'Initiative name',
+        },
+        description: {
+          type: 'string',
+          description: 'Initiative description',
+          optional: true,
+        },
+        color: {
+          type: 'string',
+          description: 'Initiative color (hex format)',
+          optional: true,
+        },
+        icon: {
+          type: 'string',
+          description: 'Initiative icon',
+          optional: true,
+        },
+        targetDate: {
+          type: 'string',
+          description: 'Target completion date (YYYY-MM-DD format)',
+          optional: true,
+        },
+        startedAt: {
+          type: 'string',
+          description: 'Start date (ISO 8601 format)',
+          optional: true,
+        },
+        ownerId: {
+          type: 'string',
+          description: 'User ID of the initiative owner',
+          optional: true,
+        },
+        sortOrder: {
+          type: 'number',
+          description: 'Sort order within the organization',
+          optional: true,
+        },
+      },
+      required: ['name'],
+    },
+  },
+
+  linear_update_initiative: {
+    name: 'linear_update_initiative',
+    description: 'Update an existing initiative',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'Initiative ID to update',
+        },
+        name: {
+          type: 'string',
+          description: 'New name',
+          optional: true,
+        },
+        description: {
+          type: 'string',
+          description: 'New description',
+          optional: true,
+        },
+        color: {
+          type: 'string',
+          description: 'New color (hex format)',
+          optional: true,
+        },
+        icon: {
+          type: 'string',
+          description: 'New icon',
+          optional: true,
+        },
+        targetDate: {
+          type: 'string',
+          description: 'New target date (YYYY-MM-DD format)',
+          optional: true,
+        },
+        startedAt: {
+          type: 'string',
+          description: 'New start date (ISO 8601 format)',
+          optional: true,
+        },
+        completedAt: {
+          type: 'string',
+          description: 'Completion date (ISO 8601 format)',
+          optional: true,
+        },
+        ownerId: {
+          type: 'string',
+          description: 'New owner user ID',
+          optional: true,
+        },
+        sortOrder: {
+          type: 'number',
+          description: 'New sort order',
+          optional: true,
+        },
+        updateReminderFrequency: {
+          type: 'number',
+          description: 'Reminder frequency',
+          optional: true,
+        },
+        updateReminderFrequencyInWeeks: {
+          type: 'number',
+          description: 'Reminder frequency in weeks',
+          optional: true,
+        },
+        updateRemindersDay: {
+          type: 'number',
+          description: 'Day of week for reminders (0-6)',
+          optional: true,
+        },
+        updateRemindersHour: {
+          type: 'number',
+          description: 'Hour of day for reminders (0-23)',
+          optional: true,
+        },
+      },
+      required: ['id'],
+    },
+  },
+
+  linear_list_initiatives: {
+    name: 'linear_list_initiatives',
+    description: 'List initiatives with optional filtering and pagination',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        first: {
+          type: 'number',
+          description: 'Number of initiatives to return (default: 50)',
+          optional: true,
+        },
+        after: {
+          type: 'string',
+          description: 'Cursor for pagination',
+          optional: true,
+        },
+        includeArchived: {
+          type: 'boolean',
+          description: 'Include archived initiatives',
+          optional: true,
+        },
+        orderBy: {
+          type: 'string',
+          description: 'Field to order by',
+          optional: true,
+        },
+        filter: {
+          type: 'object',
+          description: 'Filter criteria',
+          optional: true,
+        },
+      },
+      required: [],
+    },
+  },
+
+  linear_get_initiative: {
+    name: 'linear_get_initiative',
+    description: 'Get a single initiative by ID',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'Initiative ID',
+        },
+      },
+      required: ['id'],
+    },
+  },
+
+  linear_delete_initiative: {
+    name: 'linear_delete_initiative',
+    description: 'Delete an initiative',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'Initiative ID to delete',
+        },
+      },
+      required: ['id'],
+    },
+  },
+
+  linear_link_project_to_initiative: {
+    name: 'linear_link_project_to_initiative',
+    description: 'Link a project to an initiative',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        projectId: {
+          type: 'string',
+          description: 'Project ID to link',
+        },
+        initiativeId: {
+          type: 'string',
+          description: 'Initiative ID to link to',
+        },
+      },
+      required: ['projectId', 'initiativeId'],
+    },
+  },
+
+  linear_unlink_project_from_initiative: {
+    name: 'linear_unlink_project_from_initiative',
+    description: 'Unlink a project from its initiative',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        projectId: {
+          type: 'string',
+          description: 'Project ID to unlink',
+        },
+        initiativeId: {
+          type: 'string',
+          description: 'Initiative ID to unlink from (optional, will unlink from any initiative)',
+          optional: true,
+        },
+      },
+      required: ['projectId'],
+    },
+  },
 };

@@ -26,6 +26,16 @@ import {
 import {
   UserResponse
 } from '../features/users/types/user.types.js';
+import {
+  CreateInitiativeInput,
+  UpdateInitiativeInput,
+  CreateInitiativeResponse,
+  UpdateInitiativeResponse,
+  ListInitiativesResponse,
+  GetInitiativeResponse,
+  DeleteInitiativeResponse,
+  LinkProjectResponse
+} from '../features/initiatives/types/initiative.types.js';
 
 export class LinearGraphQLClient {
   private linearClient: LinearClient;
@@ -181,5 +191,69 @@ export class LinearGraphQLClient {
   async deleteIssues(ids: string[]): Promise<DeleteIssueResponse> {
     const { DELETE_ISSUES_MUTATION } = await import('./mutations.js');
     return this.execute<DeleteIssueResponse>(DELETE_ISSUES_MUTATION, { ids });
+  }
+
+  // Create an initiative
+  async createInitiative(input: CreateInitiativeInput): Promise<CreateInitiativeResponse> {
+    const { CREATE_INITIATIVE_MUTATION } = await import('./mutations.js');
+    return this.execute<CreateInitiativeResponse>(CREATE_INITIATIVE_MUTATION, { input });
+  }
+
+  // Update an initiative
+  async updateInitiative(input: UpdateInitiativeInput): Promise<UpdateInitiativeResponse> {
+    const { UPDATE_INITIATIVE_MUTATION } = await import('./mutations.js');
+    const { id, ...updateInput } = input;
+    return this.execute<UpdateInitiativeResponse>(UPDATE_INITIATIVE_MUTATION, { 
+      id, 
+      input: updateInput 
+    });
+  }
+
+  // List initiatives
+  async listInitiatives(
+    first: number = 50,
+    after?: string,
+    includeArchived: boolean = false,
+    orderBy?: string,
+    filter?: Record<string, unknown>
+  ): Promise<ListInitiativesResponse> {
+    const { LIST_INITIATIVES_QUERY } = await import('./queries.js');
+    return this.execute<ListInitiativesResponse>(LIST_INITIATIVES_QUERY, {
+      first,
+      after,
+      includeArchived,
+      orderBy,
+      filter
+    });
+  }
+
+  // Get a single initiative
+  async getInitiative(id: string): Promise<GetInitiativeResponse> {
+    const { GET_INITIATIVE_QUERY } = await import('./queries.js');
+    return this.execute<GetInitiativeResponse>(GET_INITIATIVE_QUERY, { id });
+  }
+
+  // Delete an initiative
+  async deleteInitiative(id: string): Promise<DeleteInitiativeResponse> {
+    const { DELETE_INITIATIVE_MUTATION } = await import('./mutations.js');
+    return this.execute<DeleteInitiativeResponse>(DELETE_INITIATIVE_MUTATION, { id });
+  }
+
+  // Link a project to an initiative
+  async linkProjectToInitiative(projectId: string, initiativeId: string): Promise<LinkProjectResponse> {
+    const { UPDATE_PROJECT_INITIATIVE } = await import('./mutations.js');
+    return this.execute<LinkProjectResponse>(UPDATE_PROJECT_INITIATIVE, {
+      id: projectId,
+      input: { initiativeId }
+    });
+  }
+
+  // Unlink a project from an initiative
+  async unlinkProjectFromInitiative(projectId: string): Promise<LinkProjectResponse> {
+    const { UPDATE_PROJECT_INITIATIVE } = await import('./mutations.js');
+    return this.execute<LinkProjectResponse>(UPDATE_PROJECT_INITIATIVE, {
+      id: projectId,
+      input: { initiativeId: null }
+    });
   }
 }
